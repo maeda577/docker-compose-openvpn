@@ -34,6 +34,7 @@ key-direction 1
 redirect-gateway
 # redirect-private
 dhcp-option DNS 8.8.8.8
+dhcp-option DNS 8.8.4.4
 
 <ca>
 `cat /openvpn/pki/ca.crt`

@@ -12,12 +12,6 @@ if [ ! -f /openvpn/ta.key ]; then
     openvpn --genkey secret /openvpn/ta.key
 fi
 
-# OpenVPN起動用の下準備
-mkdir -p /dev/net
-if [ ! -c /dev/net/tun ]; then
-    mknod /dev/net/tun c 10 200
-fi
-
 # tunからの通信をNAPT
 nft add table nat
 nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
