@@ -33,5 +33,5 @@ openvpn \
     --keepalive 10 120 \
     --cipher AES-256-GCM \
     --log-append /dev/stdout \
-    --verb 3 \
+    --verb ${OPENVPN_VERB:-3} \
     --mute 20
