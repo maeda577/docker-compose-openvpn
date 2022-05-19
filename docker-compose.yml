@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  openvpn:
+    container_name: openvpn
+    build:
+      context: https://github.com/maeda577/docker-openvpn.git#${OPENVPN_TAG:-main}
+      dockerfile: Dockerfile
+    image: localhost/openvpn:latest
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Tokyo
+      # OpenVPNのプロトコル指定 [udp4] [tcp4-server] など
+      OPENVPN_PROTO: udp4
+      OPENVPN_PORT: 1194
+      OPENVPN_TUN_ADDRESS: 10.8.0.0
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    init: true
+    ports:
+      - target: 1194
+        # 外向けに公開するポート番号。tcpの時は443にするとFWを通過しやすいかもしれない
+        published: 1194
+        # [udp] [tcp]のいずれか。上のOPENVPN_PROTOと合わせる
+        protocol: udp
+        mode: host
+    volumes:
+      - type: volume
+        source: openvpn-ca
+        target: /openvpn
+volumes:
+  openvpn-ca:
+    name: openvpn-ca
+    driver: local
